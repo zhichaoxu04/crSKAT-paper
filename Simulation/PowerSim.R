@@ -30,9 +30,8 @@ aID2 <- as.numeric(args[2]) # B
 aID3 <- as.numeric(args[3]) # Sample Size
 aID4 <- as.numeric(args[4]) # Number of Q
 aID5 <- as.numeric(args[5]) # Random seed
-aID6 <- as.numeric(args[6]) # Effect size par 2
-aID7 <- as.numeric(args[7]) # Effect size par 2
-
+aID6 <- as.numeric(args[6]) # Effect size para 2
+aID7 <- as.numeric(args[7]) # Effect size para 2
 
 numCores <- aID
 startB <- 1
