@@ -17,7 +17,6 @@ library(ICSKAT)
 library(nleqslv)
 library(crSKAT)
 
-
 # input
 args <- commandArgs(trailingOnly=TRUE)
 aID <- as.numeric(args[1])
