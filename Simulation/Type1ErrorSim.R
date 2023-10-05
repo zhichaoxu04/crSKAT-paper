@@ -16,18 +16,17 @@ library(ICSKAT)
 library(data.table)
 library(purrr)
 library(rlist)
+library(crSKAT)
 cat("---- Packages Loaded ----")
-# source("S:/Rotation/RS/Rscript/Function_081022.R")
-#----------------------------------------------------------------------------------------#
 
+# ---- Input
 # input from LSF file
 args <- commandArgs(trailingOnly=TRUE)
-aID1 <- as.numeric(args[1])  # Cores
+aID1 <- as.numeric(args[1]) # Cores
 aID2 <- as.numeric(args[2]) # B
 aID3 <- as.numeric(args[3]) # Sample Size n
 aID4 <- as.numeric(args[4]) # Number of Q
-aID5 <- as.numeric(args[5]) # Random seed
-aID6 <- as.numeric(args[6]) # Output order
+
 
 # -----------------------------------
 numcores <- aID1
@@ -46,7 +45,7 @@ beta2 <- log(1 - exp(beta1 / alpha1)) * alpha2
 
 
 # ---- gMat and xMat ----
-set.seed(aID5)
+set.seed(0)
 gMat <- matrix(data=rbinom(n=n*q, size=2, prob=0.3), ncol=q)
 gSummed <- matrix(data=apply(gMat, 1, sum), ncol=1)
 xMat <- cbind(rnorm(n), rbinom(n=n, size=1, prob=0.5))
@@ -211,7 +210,7 @@ paste0("---- Result Porcessed ----: ",Sys.time())
 
 
 save(list = c("skatDF"),
-     file = paste0("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Sim_090523/Result/T1Sim", aID6, ".rData"))
+     file = paste0("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Sim_090523/Result/T1Sim", ".rData"))
 
 paste0("**** Finished and Saved! ****: ", Sys.time())
 
