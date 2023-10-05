@@ -7,7 +7,7 @@
 #BSUB -n 1
 #BSUB -M 128
 #BSUB -R rusage[mem=128]
-#BSUB -u zxu7@mdanderson.org
+#BSUB -u you@email.com
 
 module load R/4.2.1
 
