@@ -26,11 +26,7 @@ aID2 <- as.numeric(args[2])
 aID3 <- as.numeric(args[3])
 aID4 <- as.numeric(args[4])
 aID5 <- as.numeric(args[5])
-# aID <- 1
-# aID2 <- 1
-# aID3 <- 1
-# aID4 <- 0.0001
-# aID5 <- 2
+
 
 # ---------- Some Arguments ------------------
 #max_gene_size <- 10^10

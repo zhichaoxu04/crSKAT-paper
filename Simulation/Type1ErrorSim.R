@@ -1,3 +1,5 @@
+# ---- Perform Type I Error simualtions in crSKAT paper
+# Load the required packages
 rm(list=ls())
 library(foreach)
 require(doSNOW)
@@ -14,20 +16,17 @@ library(ICSKAT)
 library(data.table)
 library(purrr)
 library(rlist)
-source("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Function_100922.R")
-paste0("---- Packages Loaded ----")
+cat("---- Packages Loaded ----")
 # source("S:/Rotation/RS/Rscript/Function_081022.R")
 #----------------------------------------------------------------------------------------#
 
-# input
+# input from LSF file
 args <- commandArgs(trailingOnly=TRUE)
 aID1 <- as.numeric(args[1])  # Cores
 aID2 <- as.numeric(args[2]) # B
 aID3 <- as.numeric(args[3]) # Sample Size n
 aID4 <- as.numeric(args[4]) # Number of Q
 aID5 <- as.numeric(args[5]) # Random seed
-# aID6 <- as.numeric(args[6]) # Effect size par 2
-# aID7 <- as.numeric(args[7]) # Effect size par 2
 aID6 <- as.numeric(args[6]) # Output order
 
 # -----------------------------------
