@@ -14,13 +14,9 @@ require(doSNOW)
 library(parallel)
 library(iterators)
 library(snow)
-
-
-# source("/Users/xu/Library/CloudStorage/OneDrive-InsideMDAnderson/MDACC/RS/Rscript/Function_092722.R")
-# source("S:/Rotation/RS/Rscript/Function_092722.R")
-source("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Function_100922.R")
+library(crSKAT)
 paste0("---- Packages Loaded ----")
-# source("S:/Rotation/RS/Rscript/Function_070522.R")
+
 
 
 # input
@@ -48,11 +44,6 @@ SampleSize <- aID3
 numQ <- aID4 # 50
 rho_test <- 0.1 # Correlation for generating gMat
 alpha <- 0.05
-
-paste0("alpha1=", alpha_1, ",alpha2=", alpha_2, ",beta1=", beta_1, ",beta2=", beta_2,
-       ",n=", SampleSize, ",Q=", numQ, ",rho=", rho_test)
-
-outputDir <- paste0("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Sim_091223/Result/", sep="") #### Modify Every Time!
 
 min <- aID6
 max <- aID7
@@ -96,11 +87,7 @@ for(i in 1:length(numCausal_test)){
   pwr2 <- sum(tem$crBurden_pval <= alpha) / n2
   pwr3 <- sum(tem$ICSKAT_pval <= alpha) / n3
   pwr4 <- sum(tem$ICBurden_pval <= alpha) / n4
-  
-  # cat("crICSKAT pwr =", pwr1, "\n")
-  # cat("crBurden pwr =", pwr2, "\n")
-  # cat("ICSKAT pwr =", pwr3, "\n")
-  # cat("Burden pwr =", pwr4, "\n")
+
   paste("Finished at", Sys.time())
   cat("\n")
   
@@ -115,9 +102,11 @@ colnames(pwr_result) <- c("Q", "crSKAT_pwr", "crSKAT_n", "crBurden_pwr", "crBurd
 cat("\n")
 
 # write results
+outputDir <- "your/path/to/output/"
 setwd(outputDir)
 outRoot <- "P2_"
 write.table(pwr_result, paste0(outRoot, aID, "_", aID2, "_", aID3, "_", 
-                               aID4, "_", aID5, "_", aID6, "_", aID7, ".txt"), append=F, quote=F, row.names=F, col.names=T) 
+                               aID4, "_", aID5, "_", aID6, "_", aID7, ".txt"), 
+            append=F, quote=F, row.names=F, col.names=T) 
 
 cat("Job Done! ")

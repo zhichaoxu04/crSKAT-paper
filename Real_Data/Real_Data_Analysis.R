@@ -15,8 +15,7 @@ library(survival)
 library(pryr)
 library(ICSKAT)
 library(nleqslv)
-# source("S:/Rotation/RS/Rscript/Function_100922.R")
-source("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Function_100922.R")
+library(crSKAT)
 
 
 # input
@@ -25,19 +24,15 @@ aID <- as.numeric(args[1])
 aID2 <- as.numeric(args[2])
 aID3 <- as.numeric(args[3])
 
-# ---------- Some Arguments ------------------
-#max_gene_size <- 10^10
+# ---- Some arguments for multiple jobs
 max_gene_size <- 10^10
 buffer <- 5000
 genes_per_run <- aID2
 method <- c("Broyden", "Newton")[aID3]
 outRoot <- "cricskatFractures_"
-# outputDir <- "S:/Rotation/RS/RDA/Out/"
-outputDir <- paste0("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/RDA/Out/091323/Result/", aID5, sep="") #### Modify Every Time!
 
-# Load Data
-# workpath <- "S:/Rotation/RS/RDA/"
-workpath <- "/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/RDA/"
+# Set work path and Load Data
+workpath <- "/your/work/path/folder"
 
 # Here load the outcomeDat as fullDat
 load(paste0(workpath, "fullDat_112922.rData"))
@@ -110,7 +105,7 @@ for (gene_it in 1:nrow(gene_info)) {
   tempChr <- gene_info$Chr[gene_it]
   
   # open GDS file
-  setwd("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/RDA/ukb_gds")
+  setwd("/your/path/to/genotype/information/")
   # setwd("S:/Rotation/RS/RDA/ukb_gds")
   gdsfile <- seqOpen(paste0("ukb_imp_chr", tempChr, "_v3_qc.gds"), allow.duplicate = TRUE)
   
@@ -213,8 +208,8 @@ for (gene_it in 1:nrow(gene_info)) {
   
   # --- weights by beta or NOT weight
   weights <- dbeta(MAFs, 1, 25)
-  weightedG <- cleanG %*% diag(weights)
-  # weightedG <- cleanG
+  weightedG <- cleanG %*% diag(weights) # weighted
+  # weightedG <- cleanG # Not weighted
   
   
   # get the covariates and times
@@ -229,7 +224,7 @@ for (gene_it in 1:nrow(gene_info)) {
   leftCensoredInd <- geno$leftCensoredInd
   
   cat("Sample Size: ", nrow(xMat), "\n")
-  # remove cleanG and geno to save space)
+  # remove cleanG and geno to save space
   rm(cleanG)
   rm(geno)
   
@@ -249,92 +244,94 @@ for (gene_it in 1:nrow(gene_info)) {
   cat("Initial: ", init_beta, "\n")
   method <- method # Broyden or Newton
   
-  # while(iter < 30 & is.na(solPartial)[1]){
-  #   solPartial <- tryCatch(nleqslv::nleqslv(x = init_beta, 
-  #                                           fn=scoreEqSpline, leftDmat = dmats$left_dmat,  rightDmat = dmats$right_dmat, leftTimes = lt,
-  #                                           deltaVec = deltaVec, gSummed = gSummed, gMat=NULL, estG = FALSE, 
-  #                                           control=list(allowSingular=TRUE, maxit=300)), method = method, 
-  #                          error = function(e){return(as.numeric(NA))})
-  #   iter <- iter + 1
-  #   
-  #   # Add some variation to initial value
-  #   set.seed(iter)
-  #   init_beta <- init_beta + rnorm(length(init_beta), 0, 0.01)
-  # }
-  # 
-  # 
-  # 
-  # if(is.na(solPartial[1])){
-  #   resultsDF$crskatp[gene_it] <- NA
-  #   resultsDF$crburdenp[gene_it] <- NA
-  #   resultsDF$crerr[gene_it] <- "nleqslvError"
-  #   resultsDF$crInitIter[gene_it] <- NA
-  # } else{
-  #   resultsDF$crInitIter[gene_it] <- solPartial$iter
-  #   # Ugamma with null coefficients
-  #   forUgamma <- scoreEqSpline(x=solPartial$x, leftDmat = dmats$left_dmat, rightDmat = dmats$right_dmat, 
-  #                              leftTimes=lt, deltaVec = deltaVec,
-  #                              gSummed = gSummed, gMat=weightedG, estG = FALSE)
-  #   
-  #   # information
-  #   # partial information, under null
-  #   iMatPartial <- calcInfo(leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat, leftTimes=lt, 
-  #                           theta1=solPartial$x[1:numCov], theta2=solPartial$x[(numCov+1):(2*(numCov)+1)], deltaVec=deltaVec,
-  #                           gSummed=gSummed, gMat = NULL)
-  #   
-  #   # Igt
-  #   forIgt <- calcInfo(leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat, leftTimes=lt, 
-  #                      theta1=c(solPartial$x[1:numCov], rep(0, q)), theta2=solPartial$x[(numCov+1):(2*(numCov)+1)], deltaVec = deltaVec,
-  #                      gSummed=gSummed, gMat=weightedG)
-  #   
-  #   # try SKAT
-  #   skatQ <- t(forUgamma[(numCov+1):(numCov+q)]) %*% forUgamma[(numCov+1):(numCov+q)]
-  #   burdenQ <- (sum(forUgamma[(numCov+1):(numCov+q)]))^2
-  #   Itt <- -iMatPartial
-  #   Igg <- -forIgt[(numCov+1):(numCov+q), (numCov+1):(numCov+q)]
-  #   Igt <- -forIgt[c(1:numCov, ((numCov+1)+q):nrow(forIgt)), (numCov+1):(numCov+q)]
-  #   sig_mat <- Igg - t(Igt) %*% solve(Itt) %*% (Igt)
-  # 
-  #   lambdaQ <- tryCatch(eigen(sig_mat)$value, error=function(e) "error")
-  #   if(lambdaQ[1] != "error"){
-  #     p_SKAT <- CompQuadForm::davies(q=skatQ, lambda=lambdaQ, delta=rep(0,length(lambdaQ)), acc=1e-7)$Qq
-  #     # as noted in the CompQuadForm documentation, sometimes you need to play with acc or lim parameters
-  #     # to get a p-value between 0 and 1
-  #     if (!is.na(p_SKAT)) {
-  #       if (p_SKAT > 1 | p_SKAT <= 0) {
-  #         paramDF <- data.frame(expand.grid(lim = c(10000, 20000, 50000), acc=c(1e-7, 1e-6, 1e-5, 1e-4)))
-  #         paramCounter <- 1
-  #         while(p_SKAT > 1 | p_SKAT <= 0) {
-  #           tempLim <- paramDF$lim[paramCounter]
-  #           tempAcc <- paramDF$acc[paramCounter]
-  #           p_SKAT <- CompQuadForm::davies(q=skatQ, lambda=lambdaQ, delta=rep(0,length(lambdaQ)), acc=tempAcc, lim=tempLim)$Qq
-  #           paramCounter <- paramCounter + 1
-  #           if (paramCounter > nrow(paramDF)) {break}
-  #         }
-  #         errCode <- 22
-  #         errMsg <- "Had to adjust parameters on CompQuadForm"
-  #       }
-  #     }
-  #     B_burden = burdenQ / sum(sig_mat);
-  #     p_burden = 1 - stats::pchisq(B_burden, df = 1)
-  #     
-  #     
-  #     resultsDF$crskatp[gene_it] <- p_SKAT
-  #     resultsDF$crburdenp[gene_it] <- p_burden
-  #     resultsDF$crerr[gene_it] <- 0
-  # 
-  #   }else{
-  #     resultsDF$crskatp[gene_it] <- NA
-  #     resultsDF$crburdenp[gene_it] <- NA
-  #     resultsDF$crerr[gene_it] <- "eigenError"
-  #     cat("Eigen sig_mat got an error", "\n")
-  #   }
-  #   
-  #   # Save memory
-  #   rm(solPartial, forUgamma, iMatPartial, forIgt, Itt, Igg, Igt, sig_mat)
-  #   
-  #     
-  #   }
+  while(iter < 30 & is.na(solPartial)[1]){
+    solPartial <- tryCatch(nleqslv::nleqslv(x = init_beta,
+                                            fn=scoreEqSpline, leftDmat = dmats$left_dmat,  rightDmat = dmats$right_dmat, 
+                                            leftTimes = lt, deltaVec = deltaVec, gSummed = gSummed, 
+                                            gMat=NULL, estG = FALSE,
+                                            control=list(allowSingular=TRUE, maxit=300)), 
+                           method = method,
+                           error = function(e){return(as.numeric(NA))})
+    iter <- iter + 1
+
+    # Add some variation to initial value
+    set.seed(iter)
+    init_beta <- init_beta + rnorm(length(init_beta), 0, 0.01)
+  }
+
+
+
+  if(is.na(solPartial[1])){
+    resultsDF$crskatp[gene_it] <- NA
+    resultsDF$crburdenp[gene_it] <- NA
+    resultsDF$crerr[gene_it] <- "nleqslvError"
+    resultsDF$crInitIter[gene_it] <- NA
+  } else{
+    resultsDF$crInitIter[gene_it] <- solPartial$iter
+    # Ugamma with null coefficients
+    forUgamma <- scoreEqSpline(x=solPartial$x, leftDmat = dmats$left_dmat, rightDmat = dmats$right_dmat,
+                               leftTimes=lt, deltaVec = deltaVec,
+                               gSummed = gSummed, gMat=weightedG, estG = FALSE)
+
+    # information
+    # partial information, under null
+    iMatPartial <- calcInfo(leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat, leftTimes=lt,
+                            theta1=solPartial$x[1:numCov], theta2=solPartial$x[(numCov+1):(2*(numCov)+1)], deltaVec=deltaVec,
+                            gSummed=gSummed, gMat = NULL)
+
+    # Igt
+    forIgt <- calcInfo(leftDmat=dmats$left_dmat, rightDmat=dmats$right_dmat, leftTimes=lt,
+                       theta1=c(solPartial$x[1:numCov], rep(0, q)), theta2=solPartial$x[(numCov+1):(2*(numCov)+1)], deltaVec = deltaVec,
+                       gSummed=gSummed, gMat=weightedG)
+
+    # try SKAT
+    skatQ <- t(forUgamma[(numCov+1):(numCov+q)]) %*% forUgamma[(numCov+1):(numCov+q)]
+    burdenQ <- (sum(forUgamma[(numCov+1):(numCov+q)]))^2
+    Itt <- -iMatPartial
+    Igg <- -forIgt[(numCov+1):(numCov+q), (numCov+1):(numCov+q)]
+    Igt <- -forIgt[c(1:numCov, ((numCov+1)+q):nrow(forIgt)), (numCov+1):(numCov+q)]
+    sig_mat <- Igg - t(Igt) %*% solve(Itt) %*% (Igt)
+
+    lambdaQ <- tryCatch(eigen(sig_mat)$value, error=function(e) "error")
+    if(lambdaQ[1] != "error"){
+      p_SKAT <- CompQuadForm::davies(q=skatQ, lambda=lambdaQ, delta=rep(0,length(lambdaQ)), acc=1e-7)$Qq
+      # as noted in the CompQuadForm documentation, sometimes you need to play with acc or lim parameters
+      # to get a p-value between 0 and 1
+      if (!is.na(p_SKAT)) {
+        if (p_SKAT > 1 | p_SKAT <= 0) {
+          paramDF <- data.frame(expand.grid(lim = c(10000, 20000, 50000), acc=c(1e-7, 1e-6, 1e-5, 1e-4)))
+          paramCounter <- 1
+          while(p_SKAT > 1 | p_SKAT <= 0) {
+            tempLim <- paramDF$lim[paramCounter]
+            tempAcc <- paramDF$acc[paramCounter]
+            p_SKAT <- CompQuadForm::davies(q=skatQ, lambda=lambdaQ, delta=rep(0,length(lambdaQ)), acc=tempAcc, lim=tempLim)$Qq
+            paramCounter <- paramCounter + 1
+            if (paramCounter > nrow(paramDF)) {break}
+          }
+          errCode <- 22
+          errMsg <- "Had to adjust parameters on CompQuadForm"
+        }
+      }
+      B_burden = burdenQ / sum(sig_mat);
+      p_burden = 1 - stats::pchisq(B_burden, df = 1)
+
+
+      resultsDF$crskatp[gene_it] <- p_SKAT
+      resultsDF$crburdenp[gene_it] <- p_burden
+      resultsDF$crerr[gene_it] <- 0
+
+    }else{
+      resultsDF$crskatp[gene_it] <- NA
+      resultsDF$crburdenp[gene_it] <- NA
+      resultsDF$crerr[gene_it] <- "eigenError"
+      cat("Eigen sig_mat got an error", "\n")
+    }
+
+    # Save memory
+    rm(solPartial, forUgamma, iMatPartial, forIgt, Itt, Igg, Igt, sig_mat)
+
+
+    }
   
   # check memory	
   cat("Size of weightedG: ", capture.output(pryr::object_size(weightedG)), "\n")
@@ -410,7 +407,8 @@ for (gene_it in 1:nrow(gene_info)) {
 }
 
 # write results
+outputDir <- "/your/output/folder/"
 setwd(outputDir)
-write.table(resultsDF, paste0(outRoot, aID, "_", method, "_", aID4, ".txt"), append=F, quote=F, row.names=F, col.names=T) 
+write.table(resultsDF, paste0(outRoot, aID, "_", method, ".txt"), append=F, quote=F, row.names=F, col.names=T) 
 
 cat("Job ", aID, " Done! ")
