@@ -34,14 +34,6 @@ aID6 <- as.numeric(args[6]) # Effect size par 2
 aID7 <- as.numeric(args[7]) # Effect size par 2
 
 
-# aID <- 80
-# aID2 <- 500
-# aID3 <- 1500
-# aID4 <- 40
-# aID5 <- 2
-# aID6 <- 0.1
-# aID7 <- 0.1
-
 numCores <- aID
 startB <- 1
 endB <- aID2
