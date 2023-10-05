@@ -1,6 +1,6 @@
 ## crSKAT-paper
 
-A novel and powerful tests for genetic set-based inference with interval-censored competing risks outcomes.
+[crSKAT](https://github.com/zhichaoxu04/crSKAT): A novel and powerful tests for genetic set-based inference with interval-censored competing risks outcomes.
 
 We provide the scripts to perform:
 
@@ -8,7 +8,7 @@ We provide the scripts to perform:
 
 - Power simulations
 
-- Real data analysis with UK Biobank
+- Real data analysis with [UK Biobank data](https://www.ukbiobank.ac.uk)
 
 - Diagnostic plots
 
@@ -17,4 +17,4 @@ We provide the scripts to perform:
 
 ## Notes:
 
-We acknowledge the support of the High Performance Computing for research facility at the University of Texas MD Anderson Cancer Center for providing computational resources that have contributed to the research results reported in this paper.
+We acknowledge the support of the High Performance Computing for research facility at the University of Texas MD Anderson Cancer Center ([seadragon](https://fuc.readthedocs.io/en/latest/seadragon.html)) for providing computational resources that have contributed to the research results reported in this paper.
