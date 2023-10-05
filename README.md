@@ -1,6 +1,6 @@
 ## crSKAT-paper
 
-[crSKAT](https://github.com/zhichaoxu04/crSKAT): A novel and powerful tests for genetic set-based inference with interval-censored competing risks outcomes.
+[crSKAT](https://github.com/zhichaoxu04/crSKAT): A powerful tests for genetic set-based inference with interval-censored competing risks outcomes.
 
 We provide the scripts to perform:
 
