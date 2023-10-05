@@ -1,1 +1,15 @@
+#BSUB -J RDA[1-700]
+#BSUB -W 240:00
+#BSUB -o /your/path/to/Log_%I.out
+#BSUB -e /your/path/to/Error_%I.err
+#BSUB -cwd /your/path/to/Work/Folder
+#BSUB -q e80long
+#BSUB -n 1
+#BSUB -M 128
+#BSUB -R rusage[mem=128]
+#BSUB -u zxu7@mdanderson.org
+
+module load R/4.2.1
+
+Rscript /your/path/to/real/data/folder/Real_Data_Analysis.R $LSB_JOBINDEX 50 1 > /your/path/to/Output.out
 
