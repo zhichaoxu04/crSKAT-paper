@@ -27,41 +27,30 @@ aID2 <- as.numeric(args[2]) # B
 aID3 <- as.numeric(args[3]) # Sample Size n
 aID4 <- as.numeric(args[4]) # Number of Q
 
-
 # -----------------------------------
 numcores <- aID1
 B1 <- 1
-B <- aID2
-# -------------------------
+B <- aID2  # the number of replications
+n <- aID3  # sample size
+q <- aID4  # the number of SNPs
 
-# ------------------------
-n <- aID3
-q <- aID4 # q is number of SNPs
-
+# Parameters for data generation
 alpha1 <- -0.058
 alpha2 <- -0.035
 beta1 <- 0.03
 beta2 <- log(1 - exp(beta1 / alpha1)) * alpha2
 
 
-# ---- gMat and xMat ----
-set.seed(0)
+# ---- Generate the genotype and covariates matrix
+set.seed(0) # random seed
 gMat <- matrix(data=rbinom(n=n*q, size=2, prob=0.3), ncol=q)
 gSummed <- matrix(data=apply(gMat, 1, sum), ncol=1)
 xMat <- cbind(rnorm(n), rbinom(n=n, size=1, prob=0.5))
 
-paste0("alpha1=", alpha1, ",alpha2=", alpha2, ",beta1=", beta1, ",beta2=", beta2, ",n=", n, ",q=", q, ",B=", B)
-
-# ------ Simulation
-paste0("---- Simulation Started ----: ", Sys.time())
-
+# ---- Simulation
 # Start parallel computing
-cl <- makeCluster(numcores, type = "SOCK", outfile = "sim_070522.txt")
+cl <- makeCluster(numcores, type = "SOCK", outfile = "T1Sim.txt")
 registerDoSNOW(cl)
-
-# ------------
-# Foreach: Parallel computing for loop
-# ------------
 
 oper <- foreach(sim_it = B1:B, .inorder = F, .errorhandling = "pass") %dopar% {
   
@@ -69,9 +58,9 @@ oper <- foreach(sim_it = B1:B, .inorder = F, .errorhandling = "pass") %dopar% {
   library(CompQuadForm)
   library(stats)
   library(foreach)
-  # library(doParallel)
+  library(doParallel)
   
-  set.seed(sim_it)
+  set.seed(sim_it) # random seed for each replication
   
   # simulate data     
   tempDat <- genData(seed = sim_it, n=n, alpha1=alpha1, alpha2=alpha2, 
@@ -185,32 +174,8 @@ oper <- foreach(sim_it = B1:B, .inorder = F, .errorhandling = "pass") %dopar% {
   return(result1)
 }
 
-paste0("---- Got Result ----: ", Sys.time())
-
 # Stop parallel computing
 stopCluster(cl)
 
-# ------ Process Result
-# tem <- oper[which(sapply(1:B, function(i) is.vector(oper[[i]])))]
-# tem2 <- t(as.data.frame(tem))
-# rm(tem, oper)
-# rownames(tem2) <- NULL
-# colnames(tem2) <- c("skatQ", "burdenQ", "pSKAT", "pburden", "B_burden",
-#                     "message", "termcd", "InitialTheta3", paste0("theta", rep(1:11)), paste0("quant", rep(1:3)),
-#                     "pICSKAT", "pICburden", "skatQ2", "burdenQ2", "err", "sim_it")
-# skatDF <- as.data.frame(tem2)
-# rm(tem2)
-filtered <- Filter(function(x) length(x) == 11, oper)
-skatDF <- as.data.frame(do.call(rbind, filtered))
-colnames(skatDF) <- c("skatQ", "burdenQ", "pSKAT", "pburden", "B_burden",
-                      # "message", "termcd", "InitialTheta3", paste0("theta", rep(1:11)), paste0("quant", rep(1:3)),
-                      "pICSKAT", "pICburden", "skatQ2", "burdenQ2", "err", "sim_it")
-
-paste0("---- Result Porcessed ----: ",Sys.time())
-
-
-save(list = c("skatDF"),
-     file = paste0("/rsrch3/scratch/biostatistics/zxu7/Rotation/RS/Rscript/Sim_090523/Result/T1Sim", ".rData"))
-
-paste0("**** Finished and Saved! ****: ", Sys.time())
+cat("---- Finished! ----")
 
