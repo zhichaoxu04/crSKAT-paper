@@ -1,0 +1,14 @@
+#BSUB -J T1Error
+#BSUB -W 240:00
+#BSUB -o /your/path/to/Log.out
+#BSUB -e /your/path/to/Error.err
+#BSUB -cwd /your/path/to/Work/Folder
+#BSUB -q long
+#BSUB -n 80
+#BSUB -M 128
+#BSUB -R rusage[mem=128]
+#BSUB -u you@email.com
+
+module load R/4.2.1
+
+Rscript /your/path/to/real/data/folder/Type1ErrorSim.R 80 1000000 5000 20 > /your/path/to/Output.out
