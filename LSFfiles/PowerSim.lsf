@@ -1,0 +1,14 @@
+#BSUB -J Power
+#BSUB -W 3:00
+#BSUB -o /your/path/to/Log.out
+#BSUB -e /your/path/to/Error.err
+#BSUB -cwd /your/path/to/Work/Folder
+#BSUB -q e40short
+#BSUB -n 40
+#BSUB -M 100
+#BSUB -R rusage[mem=100]
+#BSUB -u you@email.com
+
+module load R/4.2.1
+
+Rscript /your/path/to/real/data/folder/PowerSim.R 40 200 15000 50 1 -0.05 0.05 > /your/path/to/Output.out
