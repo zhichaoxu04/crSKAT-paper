@@ -8,6 +8,7 @@
 #BSUB -M 100
 #BSUB -R rusage[mem=100]
 #BSUB -u you@email.com
+#BSUB -N
 
 module load R/4.2.1
 
