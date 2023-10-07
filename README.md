@@ -14,6 +14,7 @@ We provide the scripts to perform:
 
 
 ## LSF files
+We provide the LSF files to submit R jobs for simulations and real data analysis.
 
 ## Notes:
 
