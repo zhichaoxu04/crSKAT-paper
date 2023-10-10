@@ -69,6 +69,7 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
 
 
 > Note: These are just a selection of the many options available with LSF. Depending on the specific requirements and configuration of your LSF system, you might use a different set of directives. Always refer to your institution's LSF documentation or system administrators for guidance for your own environment.
+
 > Some information was sourced from the official [IBM Spectrum LSF Documentation](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0) available on IBM's website.
 
 ## Parallel computing in R script
