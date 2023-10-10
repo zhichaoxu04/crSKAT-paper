@@ -49,15 +49,16 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
      #BSUB -M 128
      #BSUB -R rusage[mem=128]
      ```
-
-
-8. **Queue**:
-   `#BSUB -q queue_name`
-   Specifies the name of the queue to which the job is submitted.
-
-9. **Wall Clock Limit**:
-   `#BSUB -W HH:MM`
-   Specifies the job run time limit in hours and minutes.
+     
+1. **Queue**: Specifies the name of the queue to which the job is submitted (e.g. submit the job to `medium` queue).
+   ```bash
+   #BSUB -q queue_name (e.g. medium)
+   ```
+   
+1. **Wall Clock Limit**: Specifies the job run time limit in hours and minutes (e.g. 23 hours and 13 minutes).
+   ```bash
+   #BSUB -W HH:MM (e.g. 23:13)
+   ```
 
 10. **Email Notification**:
    `#BSUB -B -u user_email@example.com`
