@@ -17,11 +17,17 @@ We provide the scripts to perform:
 We provide the LSF files to submit R jobs for simulations and real data analysis using parallel computing. 
 When writing an LSF file (often a batch script), you'll use the `#BSUB` directive to specify job parameters.
 
-1. **Job Name**:
+1. **Job Name**: This assigns a name to the job (or job array).
+   1. Single Job
    ```bash
    #BSUB -J job_name
    ```
-   This assigns a name to the job.
+   1. Job Array: This submits a job array with 123 jobs named "job_array_name".
+   ```bash
+   #BSUB -J job_array_name[1-123]
+   ```
+   
+   
 
 1. **Output File**:
    1. Output: Redirects the standard output of the job to the specified file.
@@ -43,27 +49,25 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
      #BSUB -M 128
      #BSUB -R rusage[mem=128]
      ```
-6. **Job Array**:
-   `#BSUB -J "job_name[1-100]"`
-   This submits a job array with 100 jobs named "job_name".
 
-7. **Queue**:
+
+8. **Queue**:
    `#BSUB -q queue_name`
    Specifies the name of the queue to which the job is submitted.
 
-8. **Wall Clock Limit**:
+9. **Wall Clock Limit**:
    `#BSUB -W HH:MM`
    Specifies the job run time limit in hours and minutes.
 
-9. **Email Notification**:
+10. **Email Notification**:
    `#BSUB -B -u user_email@example.com`
    Sends an email when the job starts and finishes.
 
-10. **Job Dependency**:
+11. **Job Dependency**:
     `#BSUB -w "done(job_id)"`
     Specifies that the job should only start when the job with the given job_id is done.
 
-11. **GPU Resource**:
+12. **GPU Resource**:
     `#BSUB -gpu "num=2:j_exclusive=yes"`
     Requests 2 GPUs and ensures exclusive access to the GPUs.
 
