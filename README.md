@@ -23,7 +23,7 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
    ```
    This assigns a name to the job.
 
-2. **Output File**:
+1. **Output File**:
    1. Output: Redirects the standard output of the job to the specified file.
    ```bash
    #BSUB -o output_file_name
@@ -33,7 +33,7 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
    #BSUB -e error_file_name
    ```
 
-6. **Requested Resources**:
+1. **Requested Resources**:
    - **Number of CPUs**: Requests 40 CPU cores.
      ```bash
      #BSUB -n 40
@@ -43,9 +43,33 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
      #BSUB -M 128
      #BSUB -R rusage[mem=128]
      ```
+6. **Job Array**:
+   `#BSUB -J "job_name[1-100]"`
+   This submits a job array with 100 jobs named "job_name".
+
+7. **Queue**:
+   `#BSUB -q queue_name`
+   Specifies the name of the queue to which the job is submitted.
+
+8. **Wall Clock Limit**:
+   `#BSUB -W HH:MM`
+   Specifies the job run time limit in hours and minutes.
+
+9. **Email Notification**:
+   `#BSUB -B -u user_email@example.com`
+   Sends an email when the job starts and finishes.
+
+10. **Job Dependency**:
+    `#BSUB -w "done(job_id)"`
+    Specifies that the job should only start when the job with the given job_id is done.
+
+11. **GPU Resource**:
+    `#BSUB -gpu "num=2:j_exclusive=yes"`
+    Requests 2 GPUs and ensures exclusive access to the GPUs.
 
 
 > Note: These are just a selection of the many options available with LSF. Depending on the specific requirements and configuration of your LSF system, you might use a different set of directives. Always refer to your institution's LSF documentation or system administrators for guidance for your own environment.
+> Some information was sourced from the official [IBM Spectrum LSF Documentation](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0) available on IBM's website.
 
 ## Parallel computing in R script
 
