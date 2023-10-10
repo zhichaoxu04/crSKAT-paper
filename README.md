@@ -22,7 +22,7 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
    ```bash
    #BSUB -J job_name
    ```
-   1. Job Array: This submits a job array with 123 jobs named "job_array_name".
+   2. Job Array: This submits a job array with 123 jobs named "job_array_name".
    ```bash
    #BSUB -J job_array_name[1-123]
    ```
