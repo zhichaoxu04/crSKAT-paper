@@ -14,7 +14,15 @@ We provide the scripts to perform:
 
 
 ## LSF files
-We provide the LSF files to submit R jobs for simulations and real data analysis.
+We provide the LSF files to submit R jobs for simulations and real data analysis using parallel computing. 
+When writing an LSF file (often a batch script), you'll use the #BSUB directive to specify job parameters.
+
+1. **Job Name**:
+   ```bash
+   #BSUB -J job_name(e.g. T1Error)
+1. **Output File**:
+   ```bash
+   #BSUB -o output_file_name (e.g. /your/path/to/Log.out)
 
 ## Notes:
 
