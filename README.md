@@ -44,9 +44,8 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
      #BSUB -R rusage[mem=128]
      ```
 
-... and so on for the rest of the options ...
 
-\> Note: These are just a selection of the many options available with LSF. Depending on the specific requirements and configuration of your LSF system, you might use a different set of directives. Always refer to your institution's LSF documentation or system administrators for guidance tailored to your environment.
+> Note: These are just a selection of the many options available with LSF. Depending on the specific requirements and configuration of your LSF system, you might use a different set of directives. Always refer to your institution's LSF documentation or system administrators for guidance for your own environment.
 
 ## Parallel computing in R script
 
