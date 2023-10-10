@@ -60,18 +60,12 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
    #BSUB -W HH:MM (e.g. 23:13)
    ```
 
-10. **Email Notification**:
-   `#BSUB -B -u user_email@example.com`
-   Sends an email when the job starts and finishes.
-
-11. **Job Dependency**:
-    `#BSUB -w "done(job_id)"`
-    Specifies that the job should only start when the job with the given job_id is done.
-
-12. **GPU Resource**:
-    `#BSUB -gpu "num=2:j_exclusive=yes"`
-    Requests 2 GPUs and ensures exclusive access to the GPUs.
-
+1. **Email Notification**: Sends an email when the job starts (`-B` option) and finishes (`-N` option).
+   ```bash
+   #BSUB -u user_email@example.com
+   #BSUB -N 
+   #BSUB -B 
+   ```
 
 > Note: These are just a selection of the many options available with LSF. Depending on the specific requirements and configuration of your LSF system, you might use a different set of directives. Always refer to your institution's LSF documentation or system administrators for guidance for your own environment.
 
