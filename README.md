@@ -72,7 +72,7 @@ When writing an LSF file (often a batch script), you'll use the `#BSUB` directiv
 > Some information was sourced from the official [IBM Spectrum LSF Documentation](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0) available on IBM's website.
 
 ## Parallel computing in R script
-Parallel computing in R allows you to take advantage of multiple cores or processors to speed up computations. There are several packages and techniques available in R to facilitate parallel processing. Here, I'll provide an example using the `foreach` and `doParallel` \texttt{R} packages:
+Parallel computing in R allows you to take advantage of multiple cores or processors to speed up computations. There are several packages and techniques available in R to facilitate parallel processing. Here, I'll provide an example using the `foreach` and `doParallel` R packages:
 
 ## Notes:
 
