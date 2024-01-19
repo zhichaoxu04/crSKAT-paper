@@ -1,5 +1,8 @@
 ## crSKAT-paper
 
+> [!IMPORTANT]  
+> For more details or instructions of this package, please refer to [crSKAT](https://github.com/zhichaoxu04/crSKAT). Here we only provide the simulation settings and computational details for the paper.
+
 [crSKAT](https://github.com/zhichaoxu04/crSKAT): A powerful tests for genetic set-based inference with interval-censored competing risks outcomes.
 
 We provide the scripts to perform:
@@ -12,8 +15,6 @@ We provide the scripts to perform:
 
 - Diagnostic plots
 
-> [!IMPORTANT]  
-> For more details or instructions of this package, please refer to [crSKAT](https://github.com/zhichaoxu04/crSKAT).
 
 ## Getting Started
 
