@@ -12,6 +12,56 @@ We provide the scripts to perform:
 
 - Diagnostic plots
 
+> [!IMPORTANT]  
+> For more details or instructions of this package, please refer to [crSKAT](https://github.com/zhichaoxu04/crSKAT).
+
+## Getting Started
+
+Download and install following required R packages:
+
+- Download [crSKAT](https://github.com/zhichaoxu04/crSKAT) package from
+  Github using:
+
+<!-- -->
+
+    git clone https://github.com/zhichaoxu04/crSKAT.git
+
+- Or, install [crSKAT](https://github.com/zhichaoxu04/crSKAT) package in
+  R directly
+
+  - First, install [devtools](https://devtools.r-lib.org) in R from
+    CRAN:
+
+    ``` r
+    install.packages("devtools")
+    ```
+
+  - Then, install [crSKAT](https://github.com/zhichaoxu04/crSKAT) using
+    the `install_github` function and load the package:
+
+    ``` r
+    devtools::install_github("zhichaoxu04/crSKAT")
+    library(crSKAT)
+    ```
+
+- Make sure that all the required packages have been installed or
+  updated. Here are some of the required packages:
+
+  - [CompQuadForm](https://cran.r-project.org/web/packages/CompQuadForm/index.html):
+    Compute the distribution function of quadratic forms in normal
+    variables using Imhof’s method, Davies’s algorithm, Farebrother’s
+    algorithm or Liu et al.’s algorithm.
+  - [nleqslv](https://cran.r-project.org/web/packages/nleqslv/index.html):
+    Solves a system of nonlinear equations using a Broyden or a Newton
+    method with a choice of global strategies such as line search and
+    trust region.
+  - [ICSKAT](https://cran.r-project.org/web/packages/ICSKAT/index.html):
+    Implements the Interval-Censored Sequence Kernel Association
+    (ICSKAT) test for testing the association between interval-censored
+    time-to-event outcomes and groups of single nucleotide polymorphisms
+    (SNPs).
+  - [bindata](https://cran.r-project.org/web/packages/bindata/index.html):
+    Generates correlated artificial binary data.
 
 ## LSF files
 We provide the LSF files to submit R jobs for simulations and real data analysis using parallel computing. 
